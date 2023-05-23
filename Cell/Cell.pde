@@ -1,7 +1,11 @@
-class Cell{
+class Box{
   boolean occupied;
-  public Cell(){
+  public Box(){
     occupied = false;
+  }
+  
+  public Box(boolean bol){
+    occupied = bol;
   }
   
   boolean isOccupied(){

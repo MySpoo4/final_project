@@ -1,16 +1,22 @@
+
+void setup(){
+  size(500,1000);
+  
+}
+
 class Tetris{
   private int score;
   private int level;
   private int linesCleared;
   private Piece curPiece;
   private boolean gameOver;
-  private Cell[][] board;
+  private boolean[][] board;
   public Tetris(){
     score = 0;
     level = 0;
     linesCleared = 0;
     gameOver = false;
-    board = new Cell[20][10];
+    board = new boolean[20][10];
     
     
   }
@@ -37,7 +43,9 @@ class Tetris{
   public void increaseLevel(){
   }
   
+}
+  
   void draw(){}
   
-  void keyPressed()
+  void keyPressed(){
 }
