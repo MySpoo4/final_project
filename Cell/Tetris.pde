@@ -44,8 +44,8 @@ class Tetris{
   public void increaseLevel(){
   }
   
-  void checkCollision(){
-    
+  boolean checkCollision(){
+    return false;
   }
   
 }
