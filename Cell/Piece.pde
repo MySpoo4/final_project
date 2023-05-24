@@ -108,4 +108,8 @@ class Piece{
       orientation = allPos.length - 1;
     }
   }
+  
+  String getOrientation(){
+    return allPos[orientation];
+  }
 }

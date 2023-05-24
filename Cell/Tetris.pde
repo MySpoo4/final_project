@@ -45,6 +45,11 @@ class Tetris{
   }
   
   boolean checkCollision(){
+    for(int i = 0;i < Math.sqrt(curPiece.getOrientation().length()); i++){
+      for(int j = 0;j < Math.sqrt(curPiece.getOrientation().length()); j++){
+        
+      }
+    }
     return false;
   }
   
