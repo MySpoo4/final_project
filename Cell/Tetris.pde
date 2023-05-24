@@ -1,6 +1,6 @@
 
 void setup(){
-  size(500,1000);
+  size(400,880);
   
 }
 
@@ -16,12 +16,13 @@ class Tetris{
     level = 0;
     linesCleared = 0;
     gameOver = false;
-    board = new boolean[20][10];
-    
+    board = new boolean[22][10];
+    startGame();
     
   }
   
   public void startGame(){
+    curPiece = new Piece();
   }
   
   public boolean isGameOver(){
@@ -41,6 +42,10 @@ class Tetris{
   }
   
   public void increaseLevel(){
+  }
+  
+  void checkCollision(){
+    
   }
   
 }
