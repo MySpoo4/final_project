@@ -5,6 +5,7 @@ class Piece{
                    // all the orientations are stored as strings to save memory
   int x; //top left corner of the grid
   int y;
+  int gridSize;
   public Piece(){
     char[] shapes = new char[]{'I','J','L','O','S','Z','T'};
     orientation = 0;
@@ -71,6 +72,7 @@ class Piece{
          "010011010"
        };
      }
+     gridSize = (int) Math.sqrt(getOrientation().length());
   }
   
   int getX(){
@@ -81,25 +83,56 @@ class Piece{
     return y;
   }
   
+  int getSize(){
+    return gridSize;
+  }
+  //might not implement
   void drop(){}
+  
   
   void moveDown(){
     y++;
   }
   
   void moveLeft(){
-    x--;
+    if(gridSize==3 && x == 0 && farthestLeft() == 1){
+      x--;
+    }
+    else if(gridSize == 4 && x + farthestLeft() >= 1){
+      x--;
+    }
+    else if(x > 0){
+      x--;
+    }
   }
   
+  
   void moveRight(){
-    x++;
+    if(gridSize==3){
+      if(x == 7 && farthestRight() == 1){
+        x++;
+      }
+      else if(x < 7){
+        x++;
+      }
+    }
+    else if(gridSize == 4){
+      if(x < 6){
+        x++;
+      }
+      else if(x + farthestRight() <= 8){
+        x++;
+      }
+    }
   }
+  
   
   void rotateRight(){
     ++orientation;
     if(orientation >= allPos.length){
       orientation = 0;
     }
+    adjust();
   }
   
   void rotateLeft(){
@@ -107,9 +140,65 @@ class Piece{
     if(orientation < 0){
       orientation = allPos.length - 1;
     }
+    adjust();
+  }
+  
+  void adjust(){
+    if(x + farthestLeft() < 0){
+      while(x + farthestLeft() < 0){
+        moveRight();
+      }
+    }
+    else if(x + farthestRight() > 9){
+      while(x + farthestRight() > 9){
+        moveLeft();
+      }
+    }
   }
   
   String getOrientation(){
     return allPos[orientation];
+  }
+  
+  
+  void setX(int x){
+    this.x = x;
+  }
+  
+  void setY(int y){
+    this.y = y;
+  }
+  
+  
+  //returns the column of the farthest point of the block on the Left side
+  int farthestLeft(){
+    for(int i = 0; i <  gridSize; i++){
+      for(int j = 0; j <  gridSize; j++){
+        if(getCell(j,i)){
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+  
+  //returns the column of the farthest point of the block on the Right side
+  int farthestRight(){
+    for(int i = gridSize-1; i >=0; i--){
+      for(int j = 0; j < gridSize; j++){
+        if(getCell(j,i)){
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+  
+  boolean getCell(int row, int column){
+    int index = (row * gridSize) + column;
+    if(getOrientation().substring(index, index + 1).equals("1")){
+      return true;
+    }
+    return false;
   }
 }
