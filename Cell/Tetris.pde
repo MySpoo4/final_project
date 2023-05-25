@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 Tetris game = new Tetris();
 
+boolean stop = true;
 // fix I piece collision
 // rotating right when the block is about the be placed
 
@@ -45,11 +46,10 @@ class Tetris{
     nextPiece = new Piece();
     lastCollisionTime = millis();
   }
-  int i = 0;
   public void updateBoard(){
-    System.out.println(i++);
+    System.out.println(stop);
     boolean stop = true;
-    if(checkCollision()){
+    if(checkCollision(1)){
       if(millis() - lastCollisionTime >= 5000){
         placePiece();
         ArrayList<Integer> lines = checkLines();
@@ -58,12 +58,13 @@ class Tetris{
         curPiece = nextPiece;
         nextPiece = new Piece();
         lastCollisionTime = millis();
+        stop = true;
       }
       else{
-      stop = false;
+        stop = false;
       }
     }
-    if(stop){
+    else{
       curPiece.moveDown();
     }
   }
@@ -129,10 +130,10 @@ class Tetris{
     }
   }
   
-  boolean checkCollision(){
+  boolean checkCollision(int a){
     for(int i = 0;i < curPiece.getSize(); i++){
       for(int j = 0;j < curPiece.getSize(); j++){
-        if(board.get(curPiece.getY()+i+1)[curPiece.getX()+j+2] && curPiece.getCell(i,j)){
+        if(board.get(curPiece.getY()+i+a)[curPiece.getX()+j+2] && curPiece.getCell(i,j)){
           return true;
         }
       }
@@ -155,6 +156,7 @@ class Tetris{
   }
   
   void tick(){
+    System.out.println(stop);
     updateBoard();
     drawBoard();
     showScore();
@@ -190,27 +192,28 @@ class Tetris{
   
 void keyPressed() {
   
-    int prevOrientation = game.curPiece.orientation;
-    int x = game.curPiece.getX();
-    int y = game.curPiece.getY();
+  int prevOrientation = game.curPiece.orientation;
+  int x = game.curPiece.getX();
+  int y = game.curPiece.getY();
     
   if(key == 'a'){
     game.curPiece.moveLeft();
-    if(game.checkCollision()){
-      System.out.println(game.checkCollision());
+    
+    if(game.checkCollision(1)){
+      System.out.println(game.checkCollision(1));
       game.curPiece.moveRight();
     }
   }
   else if(key == 'd'){
     game.curPiece.moveRight();
-    if(game.checkCollision()){
+    if(game.checkCollision(1) && stop){
       game.curPiece.moveLeft();
     }
   }
   else if(key == 'j'){
     game.curPiece.rotateLeft();
     System.out.println(game.curPiece.orientation);
-    if(game.checkCollision()){
+    if(game.checkCollision(1)){
       game.curPiece.orientation = prevOrientation;
       game.curPiece.setX(x);
       game.curPiece.setY(y);
@@ -219,7 +222,7 @@ void keyPressed() {
   }
   else if(key == 'k'){
     game.curPiece.rotateRight();
-    if(game.checkCollision()){
+    if(game.checkCollision(1)){
       game.curPiece.orientation = prevOrientation;
       game.curPiece.setX(x);
       game.curPiece.setY(y);
