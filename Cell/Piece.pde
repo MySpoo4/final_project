@@ -1,17 +1,20 @@
+
+
 class Piece{
   int orientation; //the current orientation based on the allPos array
   char shape;
-  String[] allPos; //All the possible orientations of each piece
+  String[] allPos; // All the possible orientations of each piece
                    // all the orientations are stored as strings to save memory
   int x; //top left corner of the grid
   int y;
   int gridSize;
-  public Piece(){
-    char[] shapes = new char[]{'I','J','L','O','S','Z','T'};
+  int pColor;
+  
+  public Piece(char shape){
     orientation = 0;
     x = 3;
     y = 0;
-    shape = shapes[(int) random(shapes.length)];
+    this.shape = shape;
     createPiece();
   }
   // swapped bol arrays with a string of 1 and 0s
@@ -23,6 +26,7 @@ class Piece{
         "0000111100000000",
         "0010001000100010"
       };
+      pColor = #00ffff;
      }
      else if(shape == 'O'){
        allPos = new String[]{
@@ -31,6 +35,7 @@ class Piece{
          "0000011001100000",
          "0000011001100000"
        };
+       pColor = #ffff00;
      }
      else if(shape == 'L'){
        allPos = new String[]{
@@ -39,6 +44,7 @@ class Piece{
          "001111000",
          "010010011"
        };
+       pColor = #ff7f00;
      }
      else if(shape == 'J'){
        allPos = new String[]{
@@ -47,6 +53,7 @@ class Piece{
          "100111000",
          "011010010"
        };
+       pColor = #0000ff;
      }
      else if(shape == 'S'){
        allPos = new String[]{
@@ -55,6 +62,7 @@ class Piece{
          "011110000",
          "010011001"
        };
+       pColor = #00ff00;
      }
      else if(shape == 'Z'){
        allPos = new String[]{
@@ -63,6 +71,7 @@ class Piece{
          "110011000",
          "001011010"
        };
+       pColor = #ff0000;
      }
      else{
        allPos = new String[]{
@@ -71,6 +80,7 @@ class Piece{
          "010111000",
          "010011010"
        };
+       pColor = #DD0AB2;
      }
      gridSize = (int) Math.sqrt(getOrientation().length());
   }
@@ -86,8 +96,10 @@ class Piece{
   int getSize(){
     return gridSize;
   }
-  //might not implement
-  void drop(){}
+  
+  int getColor(){
+    return pColor;
+  }
   
   
   void moveDown(){
@@ -197,6 +209,13 @@ class Piece{
   boolean getCell(int row, int column){
     int index = (row * gridSize) + column;
     if(getOrientation().substring(index, index + 1).equals("1")){
+      return true;
+    }
+    return false;
+  }
+  
+  boolean equals(Piece obj){
+    if(obj.shape == shape){
       return true;
     }
     return false;
