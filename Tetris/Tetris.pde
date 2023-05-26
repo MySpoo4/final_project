@@ -60,7 +60,6 @@ class Tetris{
       game.curPiece.setX(x);
       game.curPiece.setY(y);
       if(millis() - lastCollisionTime >= 1500){
-        firstTouch = false;
         placePiece();
         ArrayList<Integer> lines = checkLines();
         clearLines(lines);
@@ -205,6 +204,7 @@ class Tetris{
   
   
   void placePiece(){
+    firstTouch = false;
     for(int i = 0;i < curPiece.getSize(); i++){
       for(int j = 0;j < curPiece.getSize(); j++){
         if(curPiece.getCell(i,j)){
