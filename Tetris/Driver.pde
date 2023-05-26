@@ -17,6 +17,7 @@ K         rotate clockwise
   }
   
    void draw(){
+     System.out.println(game.lastCollisionTime);
     if(frameCount % (11 - game.speed) == 0){
       game.tick();
     }

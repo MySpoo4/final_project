@@ -96,7 +96,6 @@ class Tetris{
       increaseScore(lines.size());
     }
     newPiece();
-    lastCollisionTime = millis();
   }
   
   int getHeight(){
