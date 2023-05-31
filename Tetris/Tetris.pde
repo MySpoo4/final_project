@@ -5,7 +5,6 @@ import java.util.Arrays;
 class Tetris{
   int speed;
   int score;
-  int level;
   int linesCleared;
   int lastCollisionTime;
   ArrayList<Character> bag;
@@ -19,7 +18,6 @@ class Tetris{
   
   public Tetris(){
     score = 0;
-    level = 0;
     linesCleared = 0;
     board = new ArrayList<boolean[]>();
     colors = new ArrayList<int[]>();
