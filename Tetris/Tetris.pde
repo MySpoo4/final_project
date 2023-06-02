@@ -1,5 +1,8 @@
 import java.util.Arrays;
-
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.HashMap;
 
   
 class Tetris{
@@ -14,6 +17,7 @@ class Tetris{
   ArrayList<boolean[]> board;
   ArrayList<int[]> colors;
   boolean firstTouch;
+  HashMap<String,Integer> highScores;
   final ArrayList<Character> shapes = new ArrayList<Character>(Arrays.asList('I','J','L','O','S','Z','T'));
   
   
@@ -23,6 +27,7 @@ class Tetris{
     linesCleared = 0;
     board = new ArrayList<boolean[]>();
     colors = new ArrayList<int[]>();
+    highScores = new HashMap<String,Integer>();
     for(int i = 0;i < 24;i++){
       board.add(i,new boolean[14]);
       colors.add(i,new int[14]);
@@ -40,6 +45,17 @@ class Tetris{
   }
   
   void startGame(){
+    File file = new File("highScores.txt");
+    try {
+      Scanner text = new Scanner(file);
+      while(text.hasNextLine()){
+        txt = text.nextLine();
+        highScores.put(txt.substring(0,));
+    }
+    catch(Exception e){
+      System.out.println(e);
+    }
+    
     newBag();
     curPiece = new Piece(bag.remove((int)(Math.random() * bag.size())));
     nextPiece = new Piece(bag.remove((int)(Math.random() * bag.size())));
