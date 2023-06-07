@@ -85,6 +85,10 @@ class Piece{
      gridSize = (int) Math.sqrt(getOrientation().length());
   }
   
+  char getShape(){
+    return shape;
+  }
+  
   int getX(){
     return x;
   }

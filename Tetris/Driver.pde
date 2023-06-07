@@ -61,6 +61,9 @@ void keyPressed() {
   else if(key == ' '){
     game.hardDrop();
   }
+  else if(key == 'l'){
+    game.holdPiece();
+  }
   else if(keyCode == ENTER){
     game = new Tetris();
   }

@@ -11,9 +11,11 @@ class Tetris{
   int level;
   int linesCleared;
   int lastCollisionTime;
+  boolean held;
   ArrayList<Character> bag;
   Piece curPiece;
   Piece nextPiece;
+  Piece hPiece;
   ArrayList<boolean[]> board;
   ArrayList<int[]> colors;
   boolean firstTouch;
@@ -45,24 +47,13 @@ class Tetris{
   }
   
   void startGame(){
-    File file = new File("highScores.txt");
-    try {
-      Scanner text = new Scanner(file);
-      while(text.hasNextLine()){
-        txt = text.nextLine();
-        highScores.put(txt.substring(0,));
-    }
-    catch(Exception e){
-      System.out.println(e);
-    }
-    
+
     newBag();
     curPiece = new Piece(bag.remove((int)(Math.random() * bag.size())));
     nextPiece = new Piece(bag.remove((int)(Math.random() * bag.size())));
   }
   
   void updateBoard(){
-    System.out.println(game.speed);
     int prevOrientation = game.curPiece.orientation;
     int x = game.curPiece.getX();
     int y = game.curPiece.getY();
@@ -97,6 +88,22 @@ class Tetris{
     }
     curPiece = nextPiece;
     nextPiece = new Piece(bag.remove((int)(Math.random() * bag.size())));
+  }
+  
+  void holdPiece(){
+    if(hPiece == null){
+      hPiece = new Piece(curPiece.getShape());
+      newPiece();
+      held = true;
+    }
+    else{
+      if(!held){
+        Piece piece = new Piece(curPiece.getShape());
+        curPiece = new Piece(hPiece.getShape());
+        hPiece = piece;
+        held = true;
+      }
+    }
   }
   
   void hardDrop(){
@@ -149,6 +156,7 @@ class Tetris{
         }
       }
     }
+    
     for(int i = 0;i < board.size()-2;i++){
       for(int j = 2;j < board.get(0).length-2;j++){
         if(board.get(i)[j]){
@@ -169,6 +177,21 @@ class Tetris{
           fill(0);
         }
       }
+    }
+    if(hPiece != null){
+      for(int i = 0;i < hPiece.getSize(); i++){
+        for(int j = 0;j < hPiece.getSize(); j++){
+          if(hPiece.getCell(i,j)){
+            int offset = 20;
+            if(hPiece.shape == 'O' || hPiece.shape == 'I'){
+              offset = 0;
+            }
+            fill(hPiece.getColor());
+            square(offset + 470 + j*40+2,300+i*40-2,36);
+            fill(0);
+          }
+        }
+    }
     }
   }
   
@@ -236,6 +259,7 @@ class Tetris{
     for(int i = 0;i < curPiece.getSize(); i++){
       for(int j = 0;j < curPiece.getSize(); j++){
         if(board.get(curPiece.getY()+i)[curPiece.getX()+j+2] && curPiece.getCell(i,j)){
+          held = false;
           return true;
         }
       }
