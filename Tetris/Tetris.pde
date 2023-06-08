@@ -8,7 +8,6 @@ import java.util.HashMap;
 class Tetris{
   int speed;
   int score;
-  int level;
   int linesCleared;
   int lastCollisionTime;
   boolean held;
@@ -25,7 +24,6 @@ class Tetris{
   
   public Tetris(){
     score = 0;
-    level = 0;
     linesCleared = 0;
     board = new ArrayList<boolean[]>();
     colors = new ArrayList<int[]>();
