@@ -113,12 +113,14 @@ class Tetris{
   
   void holdPiece(){
     if(hPiece == null){
+      firstTouch = false;
       hPiece = new Piece(curPiece.getShape());
       newPiece();
       held = true;
     }
     else{
       if(!held){
+        firstTouch = false;
         Piece piece = new Piece(curPiece.getShape());
         curPiece = new Piece(hPiece.getShape());
         hPiece = piece;
