@@ -19,7 +19,7 @@ class Tetris{
   ArrayList<boolean[]> board;
   ArrayList<int[]> colors;
   boolean firstTouch;
-  HashMap<String,Integer> highScores;
+  HashMap<String,Integer> highScore;
   final ArrayList<Character> shapes = new ArrayList<Character>(Arrays.asList('I','J','L','O','S','Z','T'));
   
   
@@ -29,7 +29,7 @@ class Tetris{
     linesCleared = 0;
     board = new ArrayList<boolean[]>();
     colors = new ArrayList<int[]>();
-    highScores = new HashMap<String,Integer>();
+    highScore = new HashMap<String,Integer>();
     for(int i = 0;i < 24;i++){
       board.add(i,new boolean[14]);
       colors.add(i,new int[14]);
@@ -47,7 +47,16 @@ class Tetris{
   }
   
   void startGame(){
-
+    try{
+      File file = new File("highScores.txt");
+      Scanner scanner = new Scanner(file);
+      String[] entry = scanner.nextLine().split("=");
+      highScore.put(entry[0].trim(),Integer.parseInt(entry[1].trim()));
+      scanner.close();
+    }
+    catch(Exception e){
+      System.out.println(e);
+    }
     newBag();
     curPiece = new Piece(bag.remove((int)(Math.random() * bag.size())));
     nextPiece = new Piece(bag.remove((int)(Math.random() * bag.size())));
@@ -138,7 +147,8 @@ class Tetris{
       rect(400,0,400,960);
     fill(255,255- 96*(float)getHeight()/20,159);
       rect(0,0,400,960);
-      rect(470,400,160,160);
+      rect(470,250,160,160);
+      rect(470,500,160,160);
       strokeWeight(1);
     stroke(#FF0000);
       strokeWeight(8);
@@ -146,7 +156,8 @@ class Tetris{
       strokeWeight(1);
     stroke(0);
     fill(0);
-    text("Next Piece",445,380);
+    text("Hold",500,230);
+    text("Next Piece",445,480);
     for(int i = 0;i < curPiece.getSize(); i++){
       for(int j = 0;j < curPiece.getSize(); j++){
         if(curPiece.getCell(i,j)){
@@ -173,7 +184,7 @@ class Tetris{
             offset = 0;
           }
           fill(nextPiece.getColor());
-          square(offset + 470 + j*40+2,400+i*40-2,36);
+          square(offset + 470 + j*40+2,500+i*40-2,36);
           fill(0);
         }
       }
@@ -187,7 +198,7 @@ class Tetris{
               offset = 0;
             }
             fill(hPiece.getColor());
-            square(offset + 470 + j*40+2,300+i*40-2,36);
+            square(offset + 470 + j*40+2,250+i*40-2,36);
             fill(0);
           }
         }
@@ -204,12 +215,14 @@ class Tetris{
   }
   
   void gameOverScreen(){
+    String desired_key = highScore.keySet().iterator().next();
     fill(#A9A9A9);
     rect(0,0,700,960);
     strokeWeight(10);
     fill(0);
     text("Game Over!",230,200);
     text("Score: " + score,270,270);
+    text("High Score: " + highScore.get(desired_key),370,270);
     text("Total Lines: " + linesCleared,220,340);
     text("Press Enter to play again!", 95, 410);
     fill(0);
