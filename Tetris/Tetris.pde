@@ -2,10 +2,13 @@ import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.HashMap;
+import java.io.FileWriter; 
 
   
 class Tetris{
+  boolean pause;
+  String name;
+  String path;
   int speed;
   int score;
   int linesCleared;
@@ -18,16 +21,17 @@ class Tetris{
   ArrayList<boolean[]> board;
   ArrayList<int[]> colors;
   boolean firstTouch;
-  HashMap<String,Integer> highScore;
+  int highScore;
   final ArrayList<Character> shapes = new ArrayList<Character>(Arrays.asList('I','J','L','O','S','Z','T'));
   
   
-  public Tetris(){
+  public Tetris(String path, boolean started){
+    this.path = path;
     score = 0;
     linesCleared = 0;
     board = new ArrayList<boolean[]>();
     colors = new ArrayList<int[]>();
-    highScore = new HashMap<String,Integer>();
+    highScore = 0;
     for(int i = 0;i < 24;i++){
       board.add(i,new boolean[14]);
       colors.add(i,new int[14]);
@@ -42,14 +46,24 @@ class Tetris{
     speed = 1;
     firstTouch = false;
     startGame();
+    if(!started){
+      startScreen();
+      pause = true;
+    }
+    else{
+      pause = false;
+    }
+  }
+  
+  void unpause(){
+    pause = false;
   }
   
   void startGame(){
     try{
-      File file = new File("highScores.txt");
+      File file = new File(path + "/highScores.txt");
       Scanner scanner = new Scanner(file);
-      String[] entry = scanner.nextLine().split("=");
-      highScore.put(entry[0].trim(),Integer.parseInt(entry[1].trim()));
+      highScore = Integer.parseInt(scanner.nextLine().trim());
       scanner.close();
     }
     catch(Exception e){
@@ -206,23 +220,59 @@ class Tetris{
   
   
   boolean isGameOver(){
+    if(score > highScore){
+      highScore = score;
+      try{
+       FileWriter myWriter = new FileWriter(path + "/highScores.txt");
+       myWriter.write(score + "");
+       myWriter.close();
+      }
+      catch(Exception e){
+        System.out.println(e);
+      }
+    }
     if(getHeight() >= 20){
       return true;
     }
     return false;
   }
+  /* CLASSIC TETRIS
+Controls
+A         move left
+D         move right
+spacebar  hard drop
+J         rotate counterclockwise
+K         rotate clockwise
+l         hold piece
+*/
+  void startScreen(){
+    textSize(104); 
+    fill(#000000);
+    text("Tetris",230,190);
+    textSize(30); 
+    text("Controls",230,240);
+    text("A         move left",230,280);
+    text("D         move right",230,320);
+    text("spacebar  hard drop",230,360);
+    text("J         rotate counterclockwise",230,400);
+    text("K         rotate clockwise",230,440);
+    text("L         hold piece",230,480);
+    textSize(50); 
+    text("Press Enter to play", 150, 550);
+  }
   
   void gameOverScreen(){
-    String desired_key = highScore.keySet().iterator().next();
+    pause = true;
     fill(#A9A9A9);
     rect(0,0,700,960);
     strokeWeight(10);
     fill(0);
     text("Game Over!",230,200);
     text("Score: " + score,270,270);
-    text("High Score: " + highScore.get(desired_key),370,270);
     text("Total Lines: " + linesCleared,220,340);
     text("Press Enter to play again!", 95, 410);
+    text("Highest Score: ",200,500);
+    text(highScore,200,570);
     fill(0);
   }
  
@@ -307,12 +357,16 @@ class Tetris{
   
   
   void tick(){
-    fill(255,255,255);
-    updateBoard();
-    drawBoard();
-    showScore();
-    if(isGameOver()){
-      gameOverScreen();
+    if(!pause){
+        fill(255,255,255);
+      updateBoard();
+      drawBoard();
+      showScore();
+      if(isGameOver()){
+        gameOverScreen();
+    }
+    else{
+    }
     }
   }
   

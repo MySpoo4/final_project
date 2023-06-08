@@ -1,5 +1,5 @@
-Tetris game = new Tetris();
-
+Tetris game;
+String path;
 /* CLASSIC TETRIS
 Controls
 A         move left
@@ -7,12 +7,14 @@ D         move right
 spacebar  hard drop
 J         rotate counterclockwise
 K         rotate clockwise
-
+l         hold piece
 */
 
 
 
   void setup(){
+    path = sketchPath("");
+    game = new Tetris(path,started);
     size(700,960);
   }
   
@@ -21,7 +23,7 @@ K         rotate clockwise
       game.tick();
     }
   }
-  
+  boolean started = false;
 void keyPressed() {
   
   int prevOrientation = game.curPiece.orientation;
@@ -65,6 +67,10 @@ void keyPressed() {
     game.holdPiece();
   }
   else if(keyCode == ENTER){
-    game = new Tetris();
+    if(!started){
+      game.unpause();
+      started = true;
+    }
+    game = new Tetris(path,started);
   }
 }
