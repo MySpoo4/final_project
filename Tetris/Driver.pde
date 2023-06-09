@@ -17,13 +17,31 @@ l         hold piece
     game = new Tetris(path,started);
     size(700,960);
   }
-  
+  boolean started = false;
+  boolean a;
+  boolean d;
    void draw(){
-    if(frameCount % (11 - game.speed) == 0){
+     game.tick();
+    if(frameCount % (15 - game.speed) == 0){
       game.tick();
     }
+    if(frameCount % 5 == 0){
+      if(a){
+        game.curPiece.moveLeft();
+        
+        if(game.checkCollision()){
+          game.curPiece.moveRight();
+        }
+      }
+      else if(d){
+        game.curPiece.moveRight();
+        if(game.checkCollision()){
+          game.curPiece.moveLeft();
+        }
+      }
+    }
   }
-  boolean started = false;
+  
 void keyPressed() {
   
   int prevOrientation = game.curPiece.orientation;
@@ -31,17 +49,10 @@ void keyPressed() {
   int y = game.curPiece.getY();
     
   if(key == 'a'){
-    game.curPiece.moveLeft();
-    
-    if(game.checkCollision()){
-      game.curPiece.moveRight();
-    }
+    a = true;
   }
   else if(key == 'd'){
-    game.curPiece.moveRight();
-    if(game.checkCollision()){
-      game.curPiece.moveLeft();
-    }
+    d = true;
   }
   else if(key == 'j'){
     game.curPiece.rotateLeft();
@@ -72,5 +83,14 @@ void keyPressed() {
       started = true;
     }
     game = new Tetris(path,started);
+  }
+}
+
+void keyReleased(){
+  if(key == 'a'){
+    a = false;
+  }
+  else if(key == 'd'){
+    d = false;
   }
 }

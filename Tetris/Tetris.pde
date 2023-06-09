@@ -78,7 +78,9 @@ class Tetris{
     int prevOrientation = game.curPiece.orientation;
     int x = game.curPiece.getX();
     int y = game.curPiece.getY();
-    curPiece.moveDown();
+    if(frameCount % (11 - speed) == 0){
+      curPiece.moveDown();
+    }
     if(checkCollision()){
       if(!firstTouch){
         lastCollisionTime = millis();
